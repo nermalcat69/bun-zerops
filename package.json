@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "dev": "bun --watch run src/index.ts",
+    "worker": "bun run src/workers/taskWorker.ts",
+    "init-db": "bun run src/scripts/init-db.ts"
+  }
+} 
