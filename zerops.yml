@@ -1,0 +1,23 @@
+zerops:
+  - setup: app
+    build:
+      base: bun@1.2
+      buildCommands:
+        - bun install
+      deployFiles: /
+    run:
+      base: bun@1.2
+      envVariables:
+        DATABASE_URL: ${db_connectionString}
+        REDIS_URL: redis://redis:6379
+        PORT: 3000
+      ports:
+        - port: 3000
+          httpSupport: true
+      initCommands:
+        - bun run init-db
+      startCommands:
+        - command: bun run start
+          name: main
+        - command: bun run worker
+          name: worker

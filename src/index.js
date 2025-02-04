@@ -1,7 +1,6 @@
 import { Elysia } from 'elysia';
 import { cors } from '@elysiajs/cors';
-import { userRouter } from './routes/users';
-import { tasksRouter } from './routes/tasks';
+import { tasksRouter } from './routes/tasks.js';
 
 const app = new Elysia()
   .use(cors())
@@ -19,7 +18,6 @@ const app = new Elysia()
         return { error: 'Internal server error' };
     }
   })
-  .use(userRouter)
   .use(tasksRouter)
   .listen(process.env.PORT || 3000);
 

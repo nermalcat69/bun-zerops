@@ -1,33 +1,19 @@
-import { pool } from '../config/database';
+import { pool } from '../config/database.js';
 
 async function initializeDatabase() {
   try {
-    // Create users table
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY,
-        email VARCHAR(255) UNIQUE NOT NULL,
-        password VARCHAR(255) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-    `);
-
-    // Create tasks table with more fields
     await pool.query(`
       CREATE TABLE IF NOT EXISTS tasks (
         id SERIAL PRIMARY KEY,
-        user_id INTEGER REFERENCES users(id),
         title VARCHAR(255) NOT NULL,
         description TEXT,
         priority VARCHAR(10) CHECK (priority IN ('low', 'medium', 'high')),
-        status VARCHAR(50) DEFAULT 'pending' CHECK (status IN ('pending', 'processing', 'completed', 'failed')),
-        due_date TIMESTAMP NOT NULL,
+        status VARCHAR(50) DEFAULT 'pending' CHECK (status IN ('pending', 'in_progress', 'completed', 'expired', 'failed')),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        expires_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP + INTERVAL '24 hours'
       );
     `);
 
-    // Create task_logs table for audit trail
     await pool.query(`
       CREATE TABLE IF NOT EXISTS task_logs (
         id SERIAL PRIMARY KEY,

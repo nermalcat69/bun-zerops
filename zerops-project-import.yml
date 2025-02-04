@@ -1,0 +1,16 @@
+project:
+  name: bun-zerops
+
+services:
+  - hostname: app
+    type: bun@1.2
+    enableSubdomainAccess: true
+    buildFromGit: https://github.com/nermalcat69/bun-zerops
+  
+  - hostname: db
+    type: postgresql@16
+    mode: NON_HA
+
+  - hostname: redis
+    type: valkey@7.2
+    mode: NON_HA
